@@ -25,14 +25,12 @@ const Signin = ({ handleLogin }: TSignin) => {
   const isFormValid =
     Object.values(formValues).filter((item) => item).length > 1;
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log({ e: e.target });
     const { name, value } = e.target;
 
     setFormValues((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = () => {
-    isFormValid && console.log("submitting...");
     setError(null);
     setLoading(true);
 
