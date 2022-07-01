@@ -1,7 +1,7 @@
-import React, { useEffect, useReducer } from "react";
+import { useEffect, useReducer } from "react";
 
 type TState = {
-  status: string;
+  status: "idle" | "fetching" | "success" | "failed";
   data: null | any[] | {};
   error: null | string;
 };
@@ -42,8 +42,18 @@ function useFetch(url: string) {
         Authorization: "Bearer keyfXgn8PL6pB3x32",
       },
     })
-      .then((response) => response.json())
-      .then((data) => dispatch({ type: "success", payload: data }))
+      .then((response) => {
+        console.log({ response });
+        if (response.status !== 200) {
+          throw new Error(`Unable to fetch ${url}`);
+        }
+
+        return response.json();
+      })
+      .then((data) => {
+        console.log({ data });
+        dispatch({ type: "success", payload: data.records });
+      })
       .catch((error) => dispatch({ type: "failed", payload: error.message }));
   };
 

@@ -1,19 +1,28 @@
-import {
-  Box,
-  Button,
-  Flex,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  Heading,
-  Input,
-} from "@chakra-ui/react";
-import React, { useState } from "react";
+import { Flex } from "@chakra-ui/react";
+import React from "react";
+import RestaurantItem from "../components/restaurant-item";
+import { TRestaurant } from "./dashboard";
 
-const Bookmarked = () => {
+type TProps = {
+  handleRemove: (value: string) => void;
+  handleBookmark: (value: string) => void;
+  bookmarkedRestaurants: TRestaurant[];
+};
+const Bookmarked = ({
+  bookmarkedRestaurants,
+  handleRemove,
+  handleBookmark,
+}: TProps) => {
   return (
     <Flex w="100%" h="100%">
-      Bookmarked
+      {bookmarkedRestaurants?.map((restaurant) => (
+        <RestaurantItem
+          isBookmarked
+          restaurant={restaurant.value}
+          handleBookmark={handleBookmark}
+          handleRemove={handleRemove}
+        />
+      ))}
     </Flex>
   );
 };

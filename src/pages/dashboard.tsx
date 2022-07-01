@@ -1,28 +1,65 @@
-import {
-  Box,
-  Button,
-  Flex,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  Heading,
-  Input,
-} from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import React, { useState } from "react";
 import Sidebar from "../components/sidebar";
 import Bookmarked from "./bookmarked";
 import Homepage from "./homepage";
 
+export type TRestaurant = {
+  value: string;
+
+  isBookmarked: boolean;
+};
 const Dashboard = () => {
   const [currentView, setCurrentView] = useState("homepage");
 
+  const [selectedRestaurants, setSelectedRestaurants] = useState<TRestaurant[]>(
+    []
+  );
+
   const handleChangeView = (view: string) => setCurrentView(view);
+
+  const handleSelect = (value: string) => {
+    setSelectedRestaurants((prev) => [...prev, { value, isBookmarked: false }]);
+  };
+
+  const handleRemove = (value: string) => {
+    setSelectedRestaurants((prev) =>
+      prev.filter((item) => item.value !== value)
+    );
+  };
+
+  const handleBookmark = (value: string) => {
+    setSelectedRestaurants((prev) =>
+      prev.map((item) =>
+        item.value === value
+          ? { ...item, isBookmarked: !item.isBookmarked }
+          : item
+      )
+    );
+  };
   const renderBasedOnView = () => {
     switch (currentView) {
       case "homepage":
-        return <Homepage />;
+        return (
+          <Homepage
+            handleRemove={handleRemove}
+            handleSelect={handleSelect}
+            handleBookmark={handleBookmark}
+            selectedRestaurants={selectedRestaurants.filter(
+              (item) => !item.isBookmarked
+            )}
+          />
+        );
       case "bookmarked":
-        return <Bookmarked />;
+        return (
+          <Bookmarked
+            handleRemove={handleRemove}
+            handleBookmark={handleBookmark}
+            bookmarkedRestaurants={selectedRestaurants.filter(
+              (item) => item.isBookmarked
+            )}
+          />
+        );
     }
   };
   return (

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./App.css";
-import { Box, ChakraProvider, Text } from "@chakra-ui/react";
+import { Box, ChakraProvider } from "@chakra-ui/react";
 import Signin from "./pages/signin";
 import Dashboard from "./pages/dashboard";
 
