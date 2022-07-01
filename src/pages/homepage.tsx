@@ -3,39 +3,39 @@ import React, { useState } from "react";
 
 import AutocompleteInput from "../components/autocomplete-input";
 import RestaurantItem from "../components/restaurant-item";
-import useFetch from "../hooks/useFetch";
+
 import { TRestaurant } from "./dashboard";
 
 type TProps = {
   handleBookmark: (value: string) => void;
   handleSelect: (value: string) => void;
   handleRemove: (value: string) => void;
+  restaurants: any;
   selectedRestaurants: TRestaurant[];
 };
 const Homepage = ({
   handleBookmark,
   handleSelect,
   handleRemove,
+  restaurants,
   selectedRestaurants,
 }: TProps) => {
   const [restaurant, setRestaurant] = useState("");
 
-  const { data: restaurants, error, status }: any = useFetch("restaurants", 5);
-
   const handleChange = (value: string) => setRestaurant(value);
 
-  const getAutocompleteValue = () => {
-    switch (status) {
-      case "fetching":
-        return "Fetching available restaurants....";
-      case "failed":
-        return error || "Unable to fetch available restaurants.";
-      case "success":
-        return restaurant;
-      default:
-        return restaurant;
-    }
-  };
+  // const getAutocompleteValue = () => {
+  //   switch (status) {
+  //     case "fetching":
+  //       return "Fetching available restaurants....";
+  //     case "failed":
+  //       return error || "Unable to fetch available restaurants.";
+  //     case "success":
+  //       return restaurant;
+  //     default:
+  //       return restaurant;
+  //   }
+  // };
 
   const availableOptions =
     restaurants?.length > 0
@@ -65,7 +65,7 @@ const Homepage = ({
           <FormControl mt={4} w="100%">
             <Flex>
               <AutocompleteInput
-                value={getAutocompleteValue()}
+                value={restaurant}
                 // handleSelect={handleSelect}
                 handleChange={handleChange}
                 options={availableOptions}

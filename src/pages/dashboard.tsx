@@ -2,6 +2,7 @@ import { Box, Flex } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { useEffect } from "react";
 import Sidebar from "../components/sidebar";
+import useFetch from "../hooks/useFetch";
 import Bookmarked from "./bookmarked";
 import Homepage from "./homepage";
 
@@ -15,6 +16,7 @@ type TProps = {
 };
 const Dashboard = ({ user }: TProps) => {
   const [currentView, setCurrentView] = useState("homepage");
+  const { data: restaurants }: any = useFetch("restaurants", 5);
 
   const [selectedRestaurants, setSelectedRestaurants] = useState<TRestaurant[]>(
     JSON.parse(
@@ -58,6 +60,7 @@ const Dashboard = ({ user }: TProps) => {
             handleRemove={handleRemove}
             handleSelect={handleSelect}
             handleBookmark={handleBookmark}
+            restaurants={restaurants || []}
             selectedRestaurants={selectedRestaurants.filter(
               (item) => !item.isBookmarked
             )}
