@@ -8,16 +8,14 @@ type TProps = {
   options: TItem[];
   value: string;
   handleChange: (value: string) => void;
-  handleSelect: (value: string) => void;
 };
 
 function AutocompleteInput({
   value,
   handleChange,
-  handleSelect,
+
   options,
 }: TProps) {
-  console.log({ options });
   return (
     <Autocomplete
       inputProps={{
@@ -41,7 +39,7 @@ function AutocompleteInput({
           background: "inherit",
         },
       }}
-      wrapperStyle={{ width: "100%" }}
+      wrapperStyle={{ width: "100%", zIndex: 9999 }}
       getItemValue={(item: TItem) => item.label}
       items={options}
       shouldItemRender={(item, value) =>
@@ -59,7 +57,7 @@ function AutocompleteInput({
       )}
       value={value}
       onChange={(e: React.ChangeEvent<any>) => handleChange(e.target.value)}
-      onSelect={(val: string) => handleSelect(val)}
+      onSelect={(val: string) => handleChange(val)}
     />
   );
 }

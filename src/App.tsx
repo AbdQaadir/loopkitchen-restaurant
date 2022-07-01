@@ -6,11 +6,19 @@ import Dashboard from "./pages/dashboard";
 
 function App() {
   const [isSignedIn, setIsSignedIn] = useState(false);
-  const handleLogin = () => setIsSignedIn(true);
+  const [user, setUser] = useState("");
+  const handleLogin = (username: string) => {
+    setIsSignedIn(true);
+    setUser(username);
+  };
   return (
     <ChakraProvider>
       <Box w="100%" h="100vh">
-        {isSignedIn ? <Dashboard /> : <Signin handleLogin={handleLogin} />}
+        {isSignedIn ? (
+          <Dashboard user={user} />
+        ) : (
+          <Signin handleLogin={handleLogin} />
+        )}
       </Box>
     </ChakraProvider>
   );

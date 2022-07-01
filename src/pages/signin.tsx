@@ -15,7 +15,7 @@ const INITIAL_VALUES = {
   password: "",
 };
 type TSignin = {
-  handleLogin: () => void;
+  handleLogin: (username: string) => void;
 };
 const Signin = ({ handleLogin }: TSignin) => {
   const [error, setError] = useState<string | null>(null);
@@ -51,7 +51,7 @@ const Signin = ({ handleLogin }: TSignin) => {
         );
 
         isAccountFound
-          ? handleLogin()
+          ? handleLogin(formValues["username"])
           : setError("Incorrect login credentials!");
       })
       .catch((error) => setError(error.message))

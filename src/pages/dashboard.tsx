@@ -1,19 +1,25 @@
 import { Box, Flex } from "@chakra-ui/react";
 import React, { useState } from "react";
+import { useEffect } from "react";
 import Sidebar from "../components/sidebar";
 import Bookmarked from "./bookmarked";
 import Homepage from "./homepage";
 
 export type TRestaurant = {
   value: string;
-
   isBookmarked: boolean;
 };
-const Dashboard = () => {
+
+type TProps = {
+  user: string;
+};
+const Dashboard = ({ user }: TProps) => {
   const [currentView, setCurrentView] = useState("homepage");
 
   const [selectedRestaurants, setSelectedRestaurants] = useState<TRestaurant[]>(
-    []
+    JSON.parse(
+      localStorage.getItem(`${user.toUpperCase()}_RESTAURANTS`) || "[]"
+    )
   );
 
   const handleChangeView = (view: string) => setCurrentView(view);
@@ -37,6 +43,13 @@ const Dashboard = () => {
       )
     );
   };
+
+  useEffect(() => {
+    localStorage.setItem(
+      `${user.toUpperCase()}_RESTAURANTS`,
+      JSON.stringify(selectedRestaurants)
+    );
+  }, [user, selectedRestaurants]);
   const renderBasedOnView = () => {
     switch (currentView) {
       case "homepage":
@@ -65,9 +78,12 @@ const Dashboard = () => {
   return (
     <Flex w="100%" h="100%">
       <Box flex={1}>
-        <Sidebar handleChangeView={handleChangeView} />
+        <Sidebar
+          currentView={currentView}
+          handleChangeView={handleChangeView}
+        />
       </Box>
-      <Box flex={7} p={4}>
+      <Box flex={7} py={4}>
         {renderBasedOnView()}
       </Box>
     </Flex>

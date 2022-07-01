@@ -32,18 +32,17 @@ const reducer = (state: TState, action: TAction): TState => {
 
 const BASE_URL = "https://api.airtable.com/v0/appjWdL7YgpxIxCKA";
 
-function useFetch(url: string) {
+function useFetch(url: string, max: number = 3) {
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE);
 
   const fetchRestaurants = () => {
     dispatch({ type: "fetching", payload: "" });
-    fetch(`${BASE_URL}/${url}?maxRecords=3&view=Grid%20view`, {
+    fetch(`${BASE_URL}/${url}?maxRecords=${max}&view=Grid%20view`, {
       headers: {
         Authorization: "Bearer keyfXgn8PL6pB3x32",
       },
     })
       .then((response) => {
-        console.log({ response });
         if (response.status !== 200) {
           throw new Error(`Unable to fetch ${url}`);
         }
@@ -51,14 +50,12 @@ function useFetch(url: string) {
         return response.json();
       })
       .then((data) => {
-        console.log({ data });
         dispatch({ type: "success", payload: data.records });
       })
       .catch((error) => dispatch({ type: "failed", payload: error.message }));
   };
 
   useEffect(() => {
-    console.log({ status: state.status });
     if (state.status !== "fetching") {
       fetchRestaurants();
     }

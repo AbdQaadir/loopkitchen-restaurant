@@ -1,10 +1,4 @@
-import {
-  Box,
-  Button,
-  FormControl,
-  InputGroup,
-  InputRightElement,
-} from "@chakra-ui/react";
+import { Box, Button, Flex, FormControl } from "@chakra-ui/react";
 import React, { useState } from "react";
 
 import AutocompleteInput from "../components/autocomplete-input";
@@ -26,15 +20,9 @@ const Homepage = ({
 }: TProps) => {
   const [restaurant, setRestaurant] = useState("");
 
-  const { data: restaurants, error, status }: any = useFetch("restaurants");
+  const { data: restaurants, error, status }: any = useFetch("restaurants", 5);
 
   const handleChange = (value: string) => setRestaurant(value);
-
-  const handleSubmit = () => {
-    console.log("object");
-  };
-
-  console.log({ status, restaurants, error });
 
   const getAutocompleteValue = () => {
     switch (status) {
@@ -66,29 +54,51 @@ const Homepage = ({
       : [];
   return (
     <Box w="100%" h="100%">
-      <Box h="10%" w="80%" maxW="580px">
-        <FormControl mt={4} w="100%">
-          <InputGroup>
-            <AutocompleteInput
-              value={getAutocompleteValue()}
-              handleSelect={handleSelect}
-              handleChange={handleChange}
-              options={availableOptions}
-            />
-            <InputRightElement width="4.5rem">
+      <Box
+        h="10%"
+        w="100%"
+        pb={4}
+        borderBottom="1px solid"
+        borderColor="gray.200"
+      >
+        <Box w="80%" maxW="580px" px={4}>
+          <FormControl mt={4} w="100%">
+            <Flex>
+              <AutocompleteInput
+                value={getAutocompleteValue()}
+                // handleSelect={handleSelect}
+                handleChange={handleChange}
+                options={availableOptions}
+              />
+
               <Button
                 colorScheme="orange"
-                // isDisabled={!isFormValid}
-                onClick={handleSubmit}
+                type="button"
+                width="5.5rem"
+                onClick={() => {
+                  const isExist = availableOptions.find(
+                    (item: any) => item.value === restaurant
+                  );
+
+                  isExist && handleSelect(restaurant);
+                }}
               >
                 Add
               </Button>
-            </InputRightElement>
-          </InputGroup>
-        </FormControl>
+            </Flex>
+          </FormControl>
+        </Box>
       </Box>
 
-      <Box pt={10} h="90%" overflowY="scroll">
+      <Flex
+        pt={10}
+        h="90%"
+        w="100%"
+        flexWrap="wrap"
+        gap={4}
+        overflowY="scroll"
+        px={4}
+      >
         {selectedRestaurants?.map((item: TRestaurant) => (
           <RestaurantItem
             key={item.value}
@@ -98,7 +108,7 @@ const Homepage = ({
             handleRemove={handleRemove}
           />
         ))}
-      </Box>
+      </Flex>
     </Box>
   );
 };
