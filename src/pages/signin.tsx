@@ -7,6 +7,8 @@ import {
   FormLabel,
   Heading,
   Input,
+  InputGroup,
+  InputRightElement,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 
@@ -21,6 +23,7 @@ const Signin = ({ handleLogin }: TSignin) => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [formValues, setFormValues] = useState(INITIAL_VALUES);
+  const [isPasswordShown, setIsPasswordShown] = useState(false);
 
   const isFormValid =
     Object.values(formValues).filter((item) => item).length > 1;
@@ -86,14 +89,25 @@ const Signin = ({ handleLogin }: TSignin) => {
         </FormControl>
         <FormControl mt={4}>
           <FormLabel htmlFor="password">Password</FormLabel>
-          <Input
-            id="password"
-            type="password"
-            name="password"
-            placeholder="password"
-            value={formValues["password"]}
-            onChange={handleChange}
-          />
+          <InputGroup>
+            <Input
+              id="password"
+              type={isPasswordShown ? "text" : "password"}
+              name="password"
+              placeholder="password"
+              value={formValues["password"]}
+              onChange={handleChange}
+            />
+            <InputRightElement width="4.5rem">
+              <Button
+                h="1.75rem"
+                size="sm"
+                onClick={() => setIsPasswordShown((prev) => !prev)}
+              >
+                {isPasswordShown ? "Hide" : "Show"}
+              </Button>
+            </InputRightElement>
+          </InputGroup>
         </FormControl>
         <FormControl my={3} isInvalid={!!error}>
           {error ? <FormErrorMessage>{error}</FormErrorMessage> : <></>}
