@@ -1,19 +1,14 @@
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { WarningIcon } from "@chakra-ui/icons";
-import React from "react";
+import React, { useContext } from "react";
 import RestaurantItem from "../components/restaurant-item";
-import { TRestaurant } from "./dashboard";
+import { DashboardContext, TRestaurant } from "./dashboard";
 
 type TProps = {
-  handleRemove: (value: string) => void;
-  handleBookmark: (value: string) => void;
   bookmarkedRestaurants: TRestaurant[];
 };
-const Bookmarked = ({
-  bookmarkedRestaurants,
-  handleRemove,
-  handleBookmark,
-}: TProps) => {
+const Bookmarked = ({ bookmarkedRestaurants }: TProps) => {
+  const { handleBookmark, handleRemove } = useContext(DashboardContext);
   return (
     <Box w="100%" h="100%" px={2}>
       <Box pt={10} px={4} mb={3}>

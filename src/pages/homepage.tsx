@@ -1,57 +1,35 @@
 import { Box, Button, Flex, FormControl } from "@chakra-ui/react";
 import React, { useState } from "react";
+import { useContext } from "react";
 
 import AutocompleteInput from "../components/autocomplete-input";
 import RestaurantItem from "../components/restaurant-item";
 
-import { TRestaurant } from "./dashboard";
+import { DashboardContext, TRestaurant } from "./dashboard";
 
 type TProps = {
-  handleBookmark: (value: string) => void;
-  handleSelect: (value: string) => void;
-  handleRemove: (value: string) => void;
-  restaurants: any;
   selectedRestaurants: TRestaurant[];
 };
-const Homepage = ({
-  handleBookmark,
-  handleSelect,
-  handleRemove,
-  restaurants,
-  selectedRestaurants,
-}: TProps) => {
-  const [restaurant, setRestaurant] = useState("");
 
+const Homepage = ({ selectedRestaurants }: TProps) => {
+  const [restaurant, setRestaurant] = useState("");
+  const { restaurants, handleBookmark, handleSelect, handleRemove } =
+    useContext(DashboardContext);
   const handleChange = (value: string) => setRestaurant(value);
 
-  // const getAutocompleteValue = () => {
-  //   switch (status) {
-  //     case "fetching":
-  //       return "Fetching available restaurants....";
-  //     case "failed":
-  //       return error || "Unable to fetch available restaurants.";
-  //     case "success":
-  //       return restaurant;
-  //     default:
-  //       return restaurant;
-  //   }
-  // };
+  const availableOptions = restaurants
+    ?.filter((item: any) => {
+      const isExist = selectedRestaurants.find(
+        (res) => res.value === item?.fields["Name"]
+      );
 
-  const availableOptions =
-    restaurants?.length > 0
-      ? restaurants
-          ?.filter((item: any) => {
-            const isExist = selectedRestaurants.find(
-              (res) => res.value === item?.fields["Name"]
-            );
+      return !isExist;
+    })
+    ?.map((item: any) => ({
+      label: item?.fields["Name"],
+      value: item?.id,
+    }));
 
-            return !isExist;
-          })
-          ?.map((item: any) => ({
-            label: item?.fields["Name"],
-            value: item?.id,
-          }))
-      : [];
   return (
     <Box w="100%" h="100%">
       <Box
@@ -102,15 +80,17 @@ const Homepage = ({
         overflowY="scroll"
         px={4}
       >
-        {selectedRestaurants?.map((item: TRestaurant) => (
-          <RestaurantItem
-            key={item.value}
-            restaurant={item.value}
-            isBookmarked={false}
-            handleBookmark={handleBookmark}
-            handleRemove={handleRemove}
-          />
-        ))}
+        {selectedRestaurants
+          ?.filter((item) => !item.isBookmarked)
+          ?.map((item: TRestaurant) => (
+            <RestaurantItem
+              key={item.value}
+              restaurant={item.value}
+              isBookmarked={false}
+              handleBookmark={handleBookmark}
+              handleRemove={handleRemove}
+            />
+          ))}
       </Flex>
     </Box>
   );

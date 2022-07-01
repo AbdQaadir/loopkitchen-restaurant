@@ -1,5 +1,6 @@
 import { Box, Flex } from "@chakra-ui/react";
 import React, { useState } from "react";
+import { createContext } from "react";
 import { useEffect } from "react";
 import Sidebar from "../components/sidebar";
 import useFetch from "../hooks/useFetch";
@@ -13,8 +14,18 @@ export type TRestaurant = {
 
 type TProps = {
   user: string;
+  handleLogout: () => void;
 };
-const Dashboard = ({ user }: TProps) => {
+
+type TDashboardContext = {
+  handleBookmark: (value: string) => void;
+  handleSelect: (value: string) => void;
+  handleRemove: (value: string) => void;
+  restaurants: any;
+};
+
+export const DashboardContext = createContext({} as TDashboardContext);
+const Dashboard = ({ user, handleLogout }: TProps) => {
   const [currentView, setCurrentView] = useState("homepage");
   const { data: restaurants }: any = useFetch("restaurants", 5);
 
@@ -55,22 +66,10 @@ const Dashboard = ({ user }: TProps) => {
   const renderBasedOnView = () => {
     switch (currentView) {
       case "homepage":
-        return (
-          <Homepage
-            handleRemove={handleRemove}
-            handleSelect={handleSelect}
-            handleBookmark={handleBookmark}
-            restaurants={restaurants || []}
-            selectedRestaurants={selectedRestaurants.filter(
-              (item) => !item.isBookmarked
-            )}
-          />
-        );
+        return <Homepage selectedRestaurants={selectedRestaurants} />;
       case "bookmarked":
         return (
           <Bookmarked
-            handleRemove={handleRemove}
-            handleBookmark={handleBookmark}
             bookmarkedRestaurants={selectedRestaurants.filter(
               (item) => item.isBookmarked
             )}
@@ -84,11 +83,21 @@ const Dashboard = ({ user }: TProps) => {
         <Sidebar
           user={user}
           currentView={currentView}
+          handleLogout={handleLogout}
           handleChangeView={handleChangeView}
         />
       </Box>
       <Box flex={7} py={4}>
-        {renderBasedOnView()}
+        <DashboardContext.Provider
+          value={{
+            restaurants,
+            handleRemove,
+            handleSelect,
+            handleBookmark,
+          }}
+        >
+          {renderBasedOnView()}
+        </DashboardContext.Provider>
       </Box>
     </Flex>
   );

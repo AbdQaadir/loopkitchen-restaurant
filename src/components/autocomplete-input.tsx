@@ -14,7 +14,7 @@ function AutocompleteInput({
   value,
   handleChange,
 
-  options,
+  options = [] as TItem[],
 }: TProps) {
   return (
     <Autocomplete

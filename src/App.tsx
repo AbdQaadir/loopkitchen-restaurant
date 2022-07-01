@@ -17,6 +17,10 @@ function App() {
     setIsSignedIn(true);
     setUser(username);
   };
+  const handleLogout = () => {
+    setIsSignedIn(false);
+    setUser("");
+  };
 
   const theme = extendTheme({
     fonts: {
@@ -29,7 +33,7 @@ function App() {
     <ChakraProvider theme={theme}>
       <Box w="100%" h="100vh">
         {isSignedIn ? (
-          <Dashboard user={user} />
+          <Dashboard user={user} handleLogout={handleLogout} />
         ) : (
           <Signin handleLogin={handleLogin} />
         )}

@@ -11,10 +11,12 @@ import { FaUserCircle } from "react-icons/fa";
 
 function Sidebar({
   user,
+  handleLogout,
   currentView,
   handleChangeView,
 }: {
   user: string;
+  handleLogout: () => void;
   currentView: string;
   handleChangeView: (view: string) => void;
 }) {
@@ -61,6 +63,16 @@ function Sidebar({
           color={currentView === "bookmarked" ? "blue.700" : "inherit"}
         >
           Bookmarked
+        </ListItem>
+        <ListItem
+          px={3}
+          py={3}
+          onClick={handleLogout}
+          fontSize="1em"
+          cursor="pointer"
+          color="red.600"
+        >
+          Logout
         </ListItem>
       </List>
     </Box>
