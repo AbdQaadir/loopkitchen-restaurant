@@ -79,6 +79,7 @@ const Dashboard = ({ user }: TProps) => {
     <Flex w="100%" h="100%">
       <Box flex={1}>
         <Sidebar
+          user={user}
           currentView={currentView}
           handleChangeView={handleChangeView}
         />

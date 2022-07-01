@@ -1,21 +1,43 @@
-import { Box, List, ListItem } from "@chakra-ui/react";
-import React from "react";
+import {
+  Avatar,
+  Badge,
+  Text,
+  Box,
+  Flex,
+  List,
+  ListItem,
+} from "@chakra-ui/react";
+import { FaUserCircle } from "react-icons/fa";
 
 function Sidebar({
+  user,
   currentView,
   handleChangeView,
 }: {
+  user: string;
   currentView: string;
   handleChangeView: (view: string) => void;
 }) {
   return (
     <Box
-      w="full"
-      h="full"
+      w="100%"
+      h="100%"
       borderRight="1px solid"
       borderColor="gray.200"
       py={4}
     >
+      <Flex h="10%" w="100%" py={4} px={3}>
+        <Avatar icon={<FaUserCircle fontSize="1.5rem" />} />
+        <Box ml="3">
+          <Text fontWeight="bold">{user}</Text>
+
+          <Text fontSize="sm">
+            <Badge ml="0" colorScheme="green">
+              Admin
+            </Badge>
+          </Text>
+        </Box>
+      </Flex>
       <List mt={5}>
         <ListItem
           px={3}

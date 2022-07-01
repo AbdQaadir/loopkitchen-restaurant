@@ -1,6 +1,12 @@
 import { useState } from "react";
 import "./App.css";
 import { Box, ChakraProvider } from "@chakra-ui/react";
+import { extendTheme } from "@chakra-ui/react";
+
+import "@fontsource/montserrat";
+import "@fontsource/montserrat/400.css";
+import "@fontsource/montserrat/700.css";
+
 import Signin from "./pages/signin";
 import Dashboard from "./pages/dashboard";
 
@@ -11,8 +17,16 @@ function App() {
     setIsSignedIn(true);
     setUser(username);
   };
+
+  const theme = extendTheme({
+    fonts: {
+      heading: `'Montserrat', sans-serif`,
+      body: `'Montserrat', sans-serif`,
+    },
+  });
+
   return (
-    <ChakraProvider>
+    <ChakraProvider theme={theme}>
       <Box w="100%" h="100vh">
         {isSignedIn ? (
           <Dashboard user={user} />

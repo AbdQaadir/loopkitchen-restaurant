@@ -35,7 +35,7 @@ function RestaurantItem({
       </AspectRatio>
       <Flex gap={3} mt={3}>
         <Button
-          colorScheme={isBookmarked ? "green" : "blue"}
+          colorScheme={isBookmarked ? "blackAlpha" : "messenger"}
           onClick={() => handleBookmark(restaurant)}
         >
           {!isBookmarked ? "Bookmark" : "Unbookmark"}

@@ -72,15 +72,18 @@ const Homepage = ({
               />
 
               <Button
-                colorScheme="orange"
+                colorScheme="messenger"
                 type="button"
                 width="5.5rem"
                 onClick={() => {
                   const isExist = availableOptions.find(
-                    (item: any) => item.value === restaurant
+                    (item: any) => item.label === restaurant
                   );
 
                   isExist && handleSelect(restaurant);
+
+                  // Reset input field value
+                  setRestaurant("");
                 }}
               >
                 Add
