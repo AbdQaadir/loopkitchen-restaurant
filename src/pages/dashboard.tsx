@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
-import React, { useState } from "react";
-import { createContext } from "react";
-import { useEffect } from "react";
+import React, { useEffect, useState, createContext } from "react";
+import { useCookies } from "react-cookie";
+
 import Sidebar from "../components/sidebar";
 import useFetch from "../hooks/useFetch";
 import Bookmarked from "./bookmarked";
@@ -28,11 +28,12 @@ export const DashboardContext = createContext({} as TDashboardContext);
 const Dashboard = ({ user, handleLogout }: TProps) => {
   const [currentView, setCurrentView] = useState("homepage");
   const { data: restaurants }: any = useFetch("restaurants", 5);
+  const [cookies, setCookie] = useCookies([
+    `${user.toUpperCase()}_RESTAURANTS`,
+  ]);
 
   const [selectedRestaurants, setSelectedRestaurants] = useState<TRestaurant[]>(
-    JSON.parse(
-      localStorage.getItem(`${user.toUpperCase()}_RESTAURANTS`) || "[]"
-    )
+    cookies[`${user.toUpperCase()}_RESTAURANTS`] || []
   );
 
   const handleChangeView = (view: string) => setCurrentView(view);
@@ -58,10 +59,12 @@ const Dashboard = ({ user, handleLogout }: TProps) => {
   };
 
   useEffect(() => {
-    localStorage.setItem(
+    setCookie(
       `${user.toUpperCase()}_RESTAURANTS`,
-      JSON.stringify(selectedRestaurants)
+      JSON.stringify(selectedRestaurants),
+      { path: "/" }
     );
+    //eslint-disable-next-line
   }, [user, selectedRestaurants]);
   const renderBasedOnView = () => {
     switch (currentView) {

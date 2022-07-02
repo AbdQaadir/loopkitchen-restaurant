@@ -1,4 +1,4 @@
-import { Box, Button, Flex, FormControl } from "@chakra-ui/react";
+import { Box, Button, Flex, FormControl, FormLabel } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { useContext } from "react";
 
@@ -19,7 +19,7 @@ const Homepage = ({ selectedRestaurants }: TProps) => {
 
   const availableOptions = restaurants
     ?.filter((item: any) => {
-      const isExist = selectedRestaurants.find(
+      const isExist = selectedRestaurants?.find(
         (res) => res.value === item?.fields["Name"]
       );
 
@@ -39,34 +39,37 @@ const Homepage = ({ selectedRestaurants }: TProps) => {
         borderBottom="1px solid"
         borderColor="gray.200"
       >
-        <Box w="80%" maxW="580px" px={4}>
-          <FormControl mt={4} w="100%">
-            <Flex>
-              <AutocompleteInput
-                value={restaurant}
-                // handleSelect={handleSelect}
-                handleChange={handleChange}
-                options={availableOptions}
-              />
+        <Box w="80%" maxW="680px" px={4}>
+          <FormControl pb={4} w="100%">
+            <Box>
+              <FormLabel fontSize=".75rem">Enter Keyword...</FormLabel>
+              <Flex>
+                <AutocompleteInput
+                  value={restaurant}
+                  // handleSelect={handleSelect}
+                  handleChange={handleChange}
+                  options={availableOptions}
+                />
 
-              <Button
-                colorScheme="messenger"
-                type="button"
-                width="5.5rem"
-                onClick={() => {
-                  const isExist = availableOptions.find(
-                    (item: any) => item.label === restaurant
-                  );
+                <Button
+                  colorScheme="messenger"
+                  type="button"
+                  width="5.5rem"
+                  onClick={() => {
+                    const isExist = availableOptions.find(
+                      (item: any) => item.label === restaurant
+                    );
 
-                  isExist && handleSelect(restaurant);
+                    isExist && handleSelect(restaurant);
 
-                  // Reset input field value
-                  setRestaurant("");
-                }}
-              >
-                Add
-              </Button>
-            </Flex>
+                    // Reset input field value
+                    setRestaurant("");
+                  }}
+                >
+                  Add
+                </Button>
+              </Flex>
+            </Box>
           </FormControl>
         </Box>
       </Box>
