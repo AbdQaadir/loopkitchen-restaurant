@@ -1,9 +1,10 @@
 import { Box, Flex } from "@chakra-ui/react";
-import React, { useEffect, useState, createContext } from "react";
+import React, { useEffect, useState, createContext, useCallback } from "react";
 import { useCookies } from "react-cookie";
 
-import Sidebar from "../components/sidebar";
 import useFetch from "../hooks/useFetch";
+
+import Sidebar from "../components/sidebar";
 import Bookmarked from "./bookmarked";
 import Homepage from "./homepage";
 
@@ -23,11 +24,12 @@ type TDashboardContext = {
   handleRemove: (value: string) => void;
   restaurants: any;
 };
-
 export const DashboardContext = createContext({} as TDashboardContext);
+
 const Dashboard = ({ user, handleLogout }: TProps) => {
-  const [currentView, setCurrentView] = useState("homepage");
   const { data: restaurants }: any = useFetch("restaurants", 5);
+
+  const [currentView, setCurrentView] = useState("homepage");
   const [cookies, setCookie] = useCookies([
     `${user.toUpperCase()}_RESTAURANTS`,
   ]);
@@ -66,7 +68,8 @@ const Dashboard = ({ user, handleLogout }: TProps) => {
     );
     //eslint-disable-next-line
   }, [user, selectedRestaurants]);
-  const renderBasedOnView = () => {
+
+  const renderBasedOnView = useCallback(() => {
     switch (currentView) {
       case "homepage":
         return <Homepage selectedRestaurants={selectedRestaurants} />;
@@ -79,7 +82,7 @@ const Dashboard = ({ user, handleLogout }: TProps) => {
           />
         );
     }
-  };
+  }, [currentView, selectedRestaurants]);
   return (
     <Flex w="100%" h="100%">
       <Box flex={1}>

@@ -15,6 +15,7 @@ const Homepage = ({ selectedRestaurants }: TProps) => {
   const [restaurant, setRestaurant] = useState("");
   const { restaurants, handleBookmark, handleSelect, handleRemove } =
     useContext(DashboardContext);
+
   const handleChange = (value: string) => setRestaurant(value);
 
   const availableOptions = restaurants
@@ -46,7 +47,6 @@ const Homepage = ({ selectedRestaurants }: TProps) => {
               <Flex>
                 <AutocompleteInput
                   value={restaurant}
-                  // handleSelect={handleSelect}
                   handleChange={handleChange}
                   options={availableOptions}
                 />
@@ -85,7 +85,7 @@ const Homepage = ({ selectedRestaurants }: TProps) => {
       >
         {selectedRestaurants
           ?.filter((item) => !item.isBookmarked)
-          ?.map((item: TRestaurant) => (
+          ?.map((item) => (
             <RestaurantItem
               key={item.value}
               restaurant={item.value}

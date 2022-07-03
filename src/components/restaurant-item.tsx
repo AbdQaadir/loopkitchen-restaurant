@@ -7,6 +7,7 @@ type TProps = {
   handleBookmark: (value: string) => void;
   handleRemove: (value: string) => void;
 };
+
 function RestaurantItem({
   isBookmarked,
   restaurant,
