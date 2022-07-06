@@ -12,14 +12,11 @@ import Signin from "./pages/signin";
 import Dashboard from "./pages/dashboard";
 
 function App() {
-  const [isSignedIn, setIsSignedIn] = useState(false);
   const [user, setUser] = useState("");
   const handleLogin = (username: string) => {
-    setIsSignedIn(true);
     setUser(username);
   };
   const handleLogout = () => {
-    setIsSignedIn(false);
     setUser("");
   };
 
@@ -34,7 +31,7 @@ function App() {
     <CookiesProvider>
       <ChakraProvider theme={theme}>
         <Box w="100%" h="100vh">
-          {isSignedIn ? (
+          {!!user ? (
             <Dashboard user={user} handleLogout={handleLogout} />
           ) : (
             <Signin handleLogin={handleLogin} />
